@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Patient Record System — Prescriptions</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <div class="mobile-brand">Hospital Record System</div>
+    <button class="mobile-toggle" id="mobileToggle">☰ Menu</button>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">Hospital System</div>
+        <div class="sidebar-subtitle">Oracle COE Project</div>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/patients">Patients</a></li>
+        <li><a href="/doctors">Doctors</a></li>
+        <li><a href="/appointments">Appointments</a></li>
+        <li><a href="/medical-records">Medical Records</a></li>
+        <li><a href="/prescriptions" class="active">Prescriptions</a></li>
+        <li><a href="/bills">Bills</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-badge">
+          <span class="user-name" id="currentUserName">User</span>
+          <span class="user-role" id="currentUserRole">Staff</span>
+        </div>
+        <button class="btn-logout" id="logoutBtn">Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+      <div class="top-bar">
+        <div>
+          <h1 class="page-title">Prescription Ledger</h1>
+          <p class="page-subtitle">Medications, dosages, and administration schedules prescribed to patients</p>
+        </div>
+        <button class="btn btn-primary" id="openAddPrescriptionBtn">+ Issue Prescription</button>
+      </div>
+
+      <div class="content-area">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <span style="font-size: 13px; color: var(--text-secondary);">Prescriptions linked directly to clinical visit records</span>
+          </div>
+          <div class="toolbar-right">
+            <span style="font-size: 12px; color: var(--text-muted);" id="prescCountLabel">Loading prescriptions...</span>
+          </div>
+        </div>
+
+        <!-- Prescriptions Table Card -->
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Rx ID</th>
+                  <th>Patient</th>
+                  <th>Medicine Name</th>
+                  <th>Dosage</th>
+                  <th>Frequency</th>
+                  <th>Duration</th>
+                  <th>Attending Doctor</th>
+                  <th>Clinical Diagnosis</th>
+                </tr>
+              </thead>
+              <tbody id="prescriptionsTableBody">
+                <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Loading prescription catalog...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Prescription Modal -->
+  <div class="modal-backdrop" id="prescriptionModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Issue Medication Prescription</h3>
+        <button class="modal-close" id="closePrescriptionModal">&times;</button>
+      </div>
+      <form id="prescriptionForm">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label class="form-label" for="formPrescRecord">Associated Medical Record <span class="required">*</span></label>
+              <select id="formPrescRecord" class="form-control" required>
+                <option value="">Select Medical Record</option>
+              </select>
+              <div class="form-hint">Prescriptions must be linked to an existing patient medical record.</div>
+            </div>
+            <div class="form-group col-full">
+              <label class="form-label" for="formPrescMedicine">Medicine Name <span class="required">*</span></label>
+              <input type="text" id="formPrescMedicine" class="form-control" required placeholder="e.g., Amoxicillin 500mg">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="formPrescDosage">Dosage <span class="required">*</span></label>
+              <input type="text" id="formPrescDosage" class="form-control" required placeholder="e.g., 1 tablet / 10 ml">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="formPrescDuration">Duration (Days) <span class="required">*</span></label>
+              <input type="number" id="formPrescDuration" class="form-control" min="1" max="365" required placeholder="e.g., 7">
+            </div>
+            <div class="form-group col-full">
+              <label class="form-label" for="formPrescFrequency">Frequency & Instructions <span class="required">*</span></label>
+              <input type="text" id="formPrescFrequency" class="form-control" required placeholder="e.g., Twice daily after meals">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelPrescBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="savePrescBtn">Issue Prescription</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="globalToast" class="alert-box"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/prescriptions.js"></script>
+</body>
+</html>

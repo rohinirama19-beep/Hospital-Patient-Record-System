@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Patient Record System — Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <div class="mobile-brand">Hospital Record System</div>
+    <button class="mobile-toggle" id="mobileToggle">☰ Menu</button>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">Hospital System</div>
+        <div class="sidebar-subtitle">Oracle COE Project</div>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="/dashboard" class="active">Dashboard</a></li>
+        <li><a href="/patients">Patients</a></li>
+        <li><a href="/doctors">Doctors</a></li>
+        <li><a href="/appointments">Appointments</a></li>
+        <li><a href="/medical-records">Medical Records</a></li>
+        <li><a href="/prescriptions">Prescriptions</a></li>
+        <li><a href="/bills">Bills</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-badge">
+          <span class="user-name" id="currentUserName">User</span>
+          <span class="user-role" id="currentUserRole">Staff</span>
+        </div>
+        <button class="btn-logout" id="logoutBtn">Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+      <div class="top-bar">
+        <div>
+          <h1 class="page-title">Hospital Overview</h1>
+          <p class="page-subtitle">Real-time database statistics and recent clinical activity</p>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <!-- 5 Database Statistics Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Patients</div>
+            <div class="stat-value" id="statPatients">—</div>
+            <div class="stat-desc">Registered in database</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Doctors</div>
+            <div class="stat-value" id="statDoctors">—</div>
+            <div class="stat-desc">Across 5 departments</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Today's Appointments</div>
+            <div class="stat-value" id="statTodayAppts">—</div>
+            <div class="stat-desc">Scheduled consultations</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Medical Records</div>
+            <div class="stat-value" id="statRecords">—</div>
+            <div class="stat-desc">Clinical diagnoses on file</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pending Bills</div>
+            <div class="stat-value" id="statPendingBills" style="color: #b45309;">—</div>
+            <div class="stat-desc">Awaiting settlement</div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Panels -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px;">
+          <!-- Recent Appointments -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Recent Appointments</h2>
+              <a href="/appointments" class="btn btn-outline btn-sm">View All</a>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recentAppointmentsBody">
+                  <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Loading appointments...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent Medical Records -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Recent Patient Records</h2>
+              <a href="/medical-records" class="btn btn-outline btn-sm">View All</a>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Diagnosis</th>
+                    <th>Record Date</th>
+                  </tr>
+                </thead>
+                <tbody id="recentRecordsBody">
+                  <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Loading medical records...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div id="globalToast" class="alert-box"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

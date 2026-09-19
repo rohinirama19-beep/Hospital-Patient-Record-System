@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Patient Record System — Medical Records</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <div class="mobile-brand">Hospital Record System</div>
+    <button class="mobile-toggle" id="mobileToggle">☰ Menu</button>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">Hospital System</div>
+        <div class="sidebar-subtitle">Oracle COE Project</div>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/patients">Patients</a></li>
+        <li><a href="/doctors">Doctors</a></li>
+        <li><a href="/appointments">Appointments</a></li>
+        <li><a href="/medical-records" class="active">Medical Records</a></li>
+        <li><a href="/prescriptions">Prescriptions</a></li>
+        <li><a href="/bills">Bills</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-badge">
+          <span class="user-name" id="currentUserName">User</span>
+          <span class="user-role" id="currentUserRole">Staff</span>
+        </div>
+        <button class="btn-logout" id="logoutBtn">Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+      <div class="top-bar">
+        <div>
+          <h1 class="page-title">Patient Medical Records</h1>
+          <p class="page-subtitle">Clinical examination notes, diagnoses, and medical treatments</p>
+        </div>
+        <button class="btn btn-primary" id="openAddRecordBtn">+ Add Medical Record</button>
+      </div>
+
+      <div class="content-area">
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <input type="text" id="recordSearchInput" class="input-search" placeholder="Search by patient name...">
+            <button class="btn btn-outline btn-sm" id="recordSearchBtn">Search</button>
+            <button class="btn btn-outline btn-sm" id="recordResetBtn">Reset</button>
+          </div>
+          <div class="toolbar-right">
+            <span style="font-size: 12px; color: var(--text-muted);" id="recordCountLabel">Loading records...</span>
+          </div>
+        </div>
+
+        <!-- Medical Records Table Card -->
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Record ID</th>
+                  <th>Patient</th>
+                  <th>Attending Doctor</th>
+                  <th>Diagnosis</th>
+                  <th>Treatment Regimen</th>
+                  <th>Record Date</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="recordsTableBody">
+                <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading medical records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add / Edit Record Modal -->
+  <div class="modal-backdrop" id="recordModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="recordModalTitle">Create Clinical Medical Record</h3>
+        <button class="modal-close" id="closeRecordModal">&times;</button>
+      </div>
+      <form id="recordForm">
+        <div class="modal-body">
+          <input type="hidden" id="editRecordId">
+          <div class="form-grid">
+            <div class="form-group col-full" id="patientSelectGroup">
+              <label class="form-label" for="formRecordPatient">Patient <span class="required">*</span></label>
+              <select id="formRecordPatient" class="form-control" required>
+                <option value="">Select Patient</option>
+              </select>
+            </div>
+            <div class="form-group" id="doctorSelectGroup">
+              <label class="form-label" for="formRecordDoctor">Doctor <span class="required">*</span></label>
+              <select id="formRecordDoctor" class="form-control" required>
+                <option value="">Select Doctor</option>
+              </select>
+            </div>
+            <div class="form-group" id="apptSelectGroup">
+              <label class="form-label" for="formRecordAppt">Linked Appointment (Optional)</label>
+              <select id="formRecordAppt" class="form-control">
+                <option value="">None / Walk-in</option>
+              </select>
+            </div>
+            <div class="form-group col-full">
+              <label class="form-label" for="formRecordDiagnosis">Clinical Diagnosis <span class="required">*</span></label>
+              <input type="text" id="formRecordDiagnosis" class="form-control" required placeholder="e.g., Acute Bronchitis">
+            </div>
+            <div class="form-group col-full">
+              <label class="form-label" for="formRecordTreatment">Treatment / Clinical Protocol <span class="required">*</span></label>
+              <input type="text" id="formRecordTreatment" class="form-control" required placeholder="e.g., Antibiotics, hydration, rest">
+            </div>
+            <div class="form-group col-full">
+              <label class="form-label" for="formRecordNotes">Physician Clinical Remarks / Notes</label>
+              <textarea id="formRecordNotes" class="form-control" rows="2" placeholder="Observations, vitals, follow-up recommendations"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelRecordBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveRecordBtn">Save Medical Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Record Details Modal -->
+  <div class="modal-backdrop" id="viewRecordModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="viewRecordTitle">Medical Record Inspection</h3>
+        <button class="modal-close" id="closeViewRecordModal">&times;</button>
+      </div>
+      <div class="modal-body" id="viewRecordBody">
+        Loading record...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" id="closeViewRecordBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="globalToast" class="alert-box"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/medical-records.js"></script>
+</body>
+</html>

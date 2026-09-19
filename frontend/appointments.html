@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Patient Record System — Appointments</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <div class="mobile-brand">Hospital Record System</div>
+    <button class="mobile-toggle" id="mobileToggle">☰ Menu</button>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">Hospital System</div>
+        <div class="sidebar-subtitle">Oracle COE Project</div>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/patients">Patients</a></li>
+        <li><a href="/doctors">Doctors</a></li>
+        <li><a href="/appointments" class="active">Appointments</a></li>
+        <li><a href="/medical-records">Medical Records</a></li>
+        <li><a href="/prescriptions">Prescriptions</a></li>
+        <li><a href="/bills">Bills</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-badge">
+          <span class="user-name" id="currentUserName">User</span>
+          <span class="user-role" id="currentUserRole">Staff</span>
+        </div>
+        <button class="btn-logout" id="logoutBtn">Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+      <div class="top-bar">
+        <div>
+          <h1 class="page-title">Appointment Scheduling</h1>
+          <p class="page-subtitle">Patient consultations, visit tracking, and operational statuses</p>
+        </div>
+        <button class="btn btn-primary" id="openBookApptBtn">+ Schedule Appointment</button>
+      </div>
+
+      <div class="content-area">
+        <!-- Toolbar Filters -->
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <input type="date" id="filterDateInput" class="form-control" style="width: 170px;">
+            <select id="filterStatusSelect" class="select-filter">
+              <option value="">All Statuses</option>
+              <option value="SCHEDULED">SCHEDULED</option>
+              <option value="COMPLETED">COMPLETED</option>
+              <option value="CANCELLED">CANCELLED</option>
+            </select>
+            <button class="btn btn-outline btn-sm" id="applyFiltersBtn">Apply Filters</button>
+            <button class="btn btn-outline btn-sm" id="resetFiltersBtn">Reset</button>
+          </div>
+          <div class="toolbar-right">
+            <span style="font-size: 12px; color: var(--text-muted);" id="apptCountLabel">Loading appointments...</span>
+          </div>
+        </div>
+
+        <!-- Appointments Table Card -->
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Appt ID</th>
+                  <th>Patient</th>
+                  <th>Doctor</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Consultation Reason</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="appointmentsTableBody">
+                <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Loading appointment entries...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Book / Edit Appointment Modal -->
+  <div class="modal-backdrop" id="appointmentModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="apptModalTitle">Book Consultation Appointment</h3>
+        <button class="modal-close" id="closeApptModal">&times;</button>
+      </div>
+      <form id="appointmentForm">
+        <div class="modal-body">
+          <input type="hidden" id="editApptId">
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label class="form-label" for="formApptPatient">Select Patient <span class="required">*</span></label>
+              <select id="formApptPatient" class="form-control" required>
+                <option value="">Choose Patient</option>
+              </select>
+            </div>
+            <div class="form-group col-full">
+              <label class="form-label" for="formApptDoctor">Attending Doctor <span class="required">*</span></label>
+              <select id="formApptDoctor" class="form-control" required>
+                <option value="">Choose Doctor</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="formApptDate">Appointment Date <span class="required">*</span></label>
+              <input type="date" id="formApptDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="formApptTime">Appointment Time <span class="required">*</span></label>
+              <input type="text" id="formApptTime" class="form-control" placeholder="e.g., 10:30 AM" required>
+            </div>
+            <div class="form-group col-full">
+              <label class="form-label" for="formApptReason">Reason for Consultation <span class="required">*</span></label>
+              <textarea id="formApptReason" class="form-control" rows="2" required placeholder="Symptoms or checkup purpose"></textarea>
+            </div>
+            <div class="form-group col-full" id="statusFieldContainer" style="display: none;">
+              <label class="form-label" for="formApptStatus">Status</label>
+              <select id="formApptStatus" class="form-control">
+                <option value="SCHEDULED">SCHEDULED</option>
+                <option value="COMPLETED">COMPLETED</option>
+                <option value="CANCELLED">CANCELLED</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelApptBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveApptBtn">Confirm Appointment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="globalToast" class="alert-box"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/appointments.js"></script>
+</body>
+</html>

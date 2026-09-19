@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Patient Record System — Doctors</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <div class="mobile-brand">Hospital Record System</div>
+    <button class="mobile-toggle" id="mobileToggle">☰ Menu</button>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">Hospital System</div>
+        <div class="sidebar-subtitle">Oracle COE Project</div>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/patients">Patients</a></li>
+        <li><a href="/doctors" class="active">Doctors</a></li>
+        <li><a href="/appointments">Appointments</a></li>
+        <li><a href="/medical-records">Medical Records</a></li>
+        <li><a href="/prescriptions">Prescriptions</a></li>
+        <li><a href="/bills">Bills</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-badge">
+          <span class="user-name" id="currentUserName">User</span>
+          <span class="user-role" id="currentUserRole">Staff</span>
+        </div>
+        <button class="btn-logout" id="logoutBtn">Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+      <div class="top-bar">
+        <div>
+          <h1 class="page-title">Medical Staff & Doctors</h1>
+          <p class="page-subtitle">Hospital physicians, specialists, and departmental allocations</p>
+        </div>
+        <button class="btn btn-primary" id="openAddDoctorBtn">+ Add Doctor</button>
+      </div>
+
+      <div class="content-area">
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <input type="text" id="doctorSearchInput" class="input-search" placeholder="Search by name or specialty...">
+            <button class="btn btn-outline btn-sm" id="doctorSearchBtn">Search</button>
+            <button class="btn btn-outline btn-sm" id="doctorResetBtn">Reset</button>
+          </div>
+          <div class="toolbar-right">
+            <span style="font-size: 12px; color: var(--text-muted);" id="doctorCountLabel">Loading doctors...</span>
+          </div>
+        </div>
+
+        <!-- Doctors Table Card -->
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Doctor ID</th>
+                  <th>Doctor Name</th>
+                  <th>Specialization</th>
+                  <th>Department</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="doctorsTableBody">
+                <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading doctor records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add / Edit Doctor Modal -->
+  <div class="modal-backdrop" id="doctorModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="doctorModalTitle">Add New Doctor</h3>
+        <button class="modal-close" id="closeDoctorModal">&times;</button>
+      </div>
+      <form id="doctorForm">
+        <div class="modal-body">
+          <input type="hidden" id="editDoctorId">
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label class="form-label" for="formDoctorName">Doctor Name <span class="required">*</span></label>
+              <input type="text" id="formDoctorName" class="form-control" required placeholder="e.g., Dr. Rajesh Sharma">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="formDoctorSpec">Specialization <span class="required">*</span></label>
+              <input type="text" id="formDoctorSpec" class="form-control" required placeholder="e.g., Cardiologist">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="formDoctorDept">Department <span class="required">*</span></label>
+              <select id="formDoctorDept" class="form-control" required>
+                <option value="">Select Department</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="formDoctorPhone">Contact Phone <span class="required">*</span></label>
+              <input type="tel" id="formDoctorPhone" class="form-control" required placeholder="10-digit number">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="formDoctorEmail">Email Address <span class="required">*</span></label>
+              <input type="email" id="formDoctorEmail" class="form-control" required placeholder="doctor@hospital.org">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelDoctorBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveDoctorBtn">Save Doctor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="globalToast" class="alert-box"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/doctors.js"></script>
+</body>
+</html>
